@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prediction Result</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RainCast Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .result-card {
+            text-align: center;
+            backdrop-filter: blur(20px);
+            background: rgba(255,255,255,0.5);
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .prediction {
+            font-size: 1.5em;
+            color: #0077b6;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container fade-in">
-    <h1>Rainfall Prediction Result</h1>
-
-    <table>
-      <tr>
-        <th>Relative Humidity (%)</th>
-        <th>Air Temp (°C)</th>
-        <th>Dew Point (°C)</th>
-      </tr>
-      {% for h, t, d in data %}
-      <tr>
-        <td>{{ "%.2f"|format(h) }}</td>
-        <td>{{ t }}</td>
-        <td>{{ d }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-
-    <h3>Highest Humidity: {{ "%.2f"|format(highest[0]) }}%</h3>
-    <h3>Air Temp: {{ highest[1] }}°C | Dew Point: {{ highest[2] }}°C</h3>
-
-    {% if prediction == "High" %}
-      <p style="color:blue; font-weight:bold;">High chance of rainfall 🌧</p>
-    {% else %}
-      <p style="color:red; font-weight:bold;">Low chance of rainfall ☀️</p>
-    {% endif %}
-
-    <a href="/" class="button fade-in">🔁 Try Again</a>
-  </div>
+    <div class="rain"></div>
+    <div class="result-card">
+        <h1>🌧️ RainCast Result</h1>
+        <p><strong>Sorted Rainfall Data:</strong> {{ data }}</p>
+        <p><strong>Highest Value:</strong> {{ highest }}</p>
+        <p class="prediction">{{ prediction }}</p>
+        <a href="/" style="text-decoration:none;">
+            <button style="margin-top:20px;">🔁 Predict Again</button>
+        </a>
+    </div>
 </body>
 </html>
