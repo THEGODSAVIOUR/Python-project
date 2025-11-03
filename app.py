@@ -3,53 +3,47 @@ import math
 
 app = Flask(__name__)
 
-def calculate_humidity(air_temp, dew_temp):
-    """Calculate relative humidity based on given formulas."""
-    specific_humidity = 6.11 * (10 ** ((7.5 * dew_temp) / (237.3 + dew_temp)))
-    saturation_point = 6.11 * (10 ** ((7.5 * air_temp) / (237.3 + air_temp)))
-    relative_humidity = (specific_humidity / saturation_point) * 100
-    return relative_humidity
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        n = int(request.form['count'])
-        readings = []
+        n = int(request.form['n'])
+        data = []
 
-        # Collect readings from form
-        for i in range(n):
-            air = float(request.form[f'air{i}'])
-            dew = float(request.form[f'dew{i}'])
-            rh = calculate_humidity(air, dew)
-            readings.append((rh, air, dew))
+        for i in range(1, n + 1):
+            air_temp = float(request.form[f'air_temp_{i}'])
+            dew_temp = float(request.form[f'dew_temp_{i}'])
 
-        # Sort by relative humidity (ascending)
-        readings.sort(key=lambda x: x[0])
+            # Calculations
+            specific_humidity = 6.11 * 10 ** ((7.5 * dew_temp) / (237.3 + dew_temp))
+            saturation_point = 6.11 * 10 ** ((7.5 * air_temp) / (237.3 + air_temp))
+            relative_humidity = (specific_humidity / saturation_point) * 100
 
-        # Find highest relative humidity
-        highest = readings[-1]
-        prediction = "Low chance of rainfall."
+            data.append({
+                'air_temp': air_temp,
+                'dew_temp': dew_temp,
+                'humidity': round(relative_humidity, 2)
+            })
 
-        # Check if temperature is dropping compared to previous reading
-        if highest[0] > 80 and n > 1 and highest[1] < readings[-2][1]:
-            prediction = "High chance of rainfall (humidity high & temperature dropping)."
+        # Sort by humidity
+        sorted_data = sorted(data, key=lambda x: x['humidity'])
+
+        # Highest humidity
+        highest = sorted_data[-1]
+        prediction = "High" if highest['humidity'] > 70 and highest['air_temp'] < 26 else "Low"
 
         return render_template(
             'result.html',
-            readings=readings,
+            sorted_data=sorted_data,
             highest=highest,
             prediction=prediction
         )
 
     except Exception as e:
-        return f"Error: {e}"
-
+        return f"Error: {str(e)}"
 
 if __name__ == '__main__':
     app.run(debug=True)

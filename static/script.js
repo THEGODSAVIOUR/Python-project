@@ -1,16 +1,23 @@
 function generateInputs() {
-    const count = document.getElementById('count').value;
-    const container = document.getElementById('inputFields');
-    container.innerHTML = "";
+  const n = document.getElementById('n').value;
+  const inputDiv = document.getElementById('inputFields');
+  inputDiv.innerHTML = '';
 
-    for (let i = 0; i < count; i++) {
-        container.innerHTML += `
-            <div>
-                <label>Air Temp (°C) ${i + 1}:</label>
-                <input type="number" name="air${i}" min="23" max="28" required>
-                <label>Dew Point (°C) ${i + 1}:</label>
-                <input type="number" name="dew${i}" min="7" max="16" required>
-            </div>
-        `;
-    }
+  if (n < 1 || n > 10) {
+    alert('Please enter a number between 1 and 10');
+    return;
+  }
+
+  for (let i = 1; i <= n; i++) {
+    const div = document.createElement('div');
+    div.classList.add('reading');
+    div.innerHTML = `
+      <h3>Reading ${i}</h3>
+      <label>Air Temperature (23–28°C):</label>
+      <input type="number" name="air_temp_${i}" step="0.1" required>
+      <label>Dew Point Temperature (7–16°C):</label>
+      <input type="number" name="dew_temp_${i}" step="0.1" required>
+    `;
+    inputDiv.appendChild(div);
+  }
 }
