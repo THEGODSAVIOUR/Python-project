@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🌧 Rainfall Prediction Results</h1>
+
+        <table>
+            <tr>
+                <th>Relative Humidity (%)</th>
+                <th>Air Temp (°C)</th>
+                <th>Dew Point (°C)</th>
+            </tr>
+            {% for rh, air, dew in readings %}
+            <tr>
+                <td>{{ "%.2f"|format(rh) }}</td>
+                <td>{{ air }}</td>
+                <td>{{ dew }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Highest Relative Humidity:</h3>
+        <p>{{ "%.2f"|format(highest[0]) }}% at {{ highest[1] }}°C air / {{ highest[2] }}°C dew point</p>
+
+        <h3>Prediction:</h3>
+        <p><strong>{{ prediction }}</strong></p>
+
+        <a href="/" class="btn">🔙 Try Again</a>
+    </div>
+</body>
+</html>

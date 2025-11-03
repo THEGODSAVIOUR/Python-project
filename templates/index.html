@@ -1,122 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rainfall Prediction Using Sorting</title>
-
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-
-  <style>
-    body {
-      background-color: #eaf3fc;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    header {
-      background-color: #0275d8;
-      color: white;
-      padding: 30px 0;
-      text-align: center;
-    }
-
-    .container {
-      margin-top: 40px;
-      max-width: 900px;
-      background-color: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      padding: 15px;
-      color: gray;
-    }
-
-    #output {
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 20px;
-      border: 1px solid #d1d1d1;
-      white-space: pre-line;
-    }
-
-    h1, h3 {
-      font-weight: 700;
-    }
-
-    button {
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainfall Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header>
-    <h1>Rainfall Prediction Using Sorting</h1>
-    <p>Analyze rainfall trends using sorting algorithms</p>
-  </header>
-
-  <div class="container">
-    <h3>Introduction</h3>
-    <p>
-      This project uses sorting algorithms to help identify rainfall trends, calculate averages,
-      and predict the next rainfall value based on past data.
-    </p>
-
-    <hr />
-
-    <h3>Input Rainfall Data</h3>
-    <p>
-      Enter rainfall values (in mm) separated by commas, or upload a CSV file containing rainfall data.
-    </p>
-
-    <textarea
-      id="rainfall"
-      class="form-control"
-      rows="3"
-      placeholder="e.g., 78, 102, 45, 130, 95, 88, 60, 110, 55"
-    ></textarea>
-
-    <div class="row mt-3">
-      <div class="col-md-6">
-        <label class="form-label">Select Sorting Algorithm:</label>
-        <select id="algorithm" class="form-select">
-          <option value="bubble">Bubble Sort</option>
-          <option value="selection">Selection Sort</option>
-          <option value="quick">Quick Sort</option>
-        </select>
-      </div>
-
-      <div class="col-md-6 d-flex align-items-end">
-        <button id="analyze-btn" class="btn btn-primary w-100">Analyze Data</button>
-      </div>
+    <div class="container">
+        <h1>🌦 Rainfall Prediction using Sorting</h1>
+        <form method="POST" action="/predict" id="tempForm">
+            <label>Enter number of readings:</label>
+            <input type="number" id="count" name="count" min="1" required>
+            <button type="button" onclick="generateInputs()">Generate Fields</button>
+            <div id="inputFields"></div>
+            <button type="submit">Predict</button>
+        </form>
     </div>
 
-    <div id="output" class="mt-4"></div>
-
-    <hr />
-    <h3>Conclusion</h3>
-    <p>
-      Sorting rainfall data helps identify wet and dry seasons. It also provides a foundation
-      for building more advanced prediction models.
-    </p>
-  </div>
-
-  <footer>
-    <p>© 2025 Rainfall Prediction Project</p>
-  </footer>
-
-  <!-- JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
