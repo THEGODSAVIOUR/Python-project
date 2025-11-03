@@ -4,46 +4,47 @@ import math
 app = Flask(__name__)
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        n = int(request.form['n'])
+        temps = request.form.getlist('temp')
+        dews = request.form.getlist('dew')
         data = []
 
-        for i in range(1, n + 1):
-            air_temp = float(request.form[f'air_temp_{i}'])
-            dew_temp = float(request.form[f'dew_temp_{i}'])
+        for temp, dew in zip(temps, dews):
+            temp = float(temp)
+            dew = float(dew)
 
-            # Calculations
-            specific_humidity = 6.11 * 10 ** ((7.5 * dew_temp) / (237.3 + dew_temp))
-            saturation_point = 6.11 * 10 ** ((7.5 * air_temp) / (237.3 + air_temp))
+            # Formula calculations
+            specific_humidity = 6.11 * (10 ** ((7.5 * dew) / (237.3 + dew)))
+            saturation_point = 6.11 * (10 ** ((7.5 * temp) / (237.3 + temp)))
             relative_humidity = (specific_humidity / saturation_point) * 100
 
             data.append({
-                'air_temp': air_temp,
-                'dew_temp': dew_temp,
-                'humidity': round(relative_humidity, 2)
+                'temp': temp,
+                'dew': dew,
+                'rh': relative_humidity
             })
 
-        # Sort by humidity
-        sorted_data = sorted(data, key=lambda x: x['humidity'])
+        # Sort based on relative humidity
+        data.sort(key=lambda x: x['rh'])
 
-        # Highest humidity
-        highest = sorted_data[-1]
-        prediction = "High" if highest['humidity'] > 70 and highest['air_temp'] < 26 else "Low"
+        # Find highest relative humidity
+        highest = max(data, key=lambda x: x['rh'])
 
-        return render_template(
-            'result.html',
-            sorted_data=sorted_data,
-            highest=highest,
-            prediction=prediction
-        )
+        # Determine rainfall prediction
+        if highest['rh'] > 80 and highest['temp'] < 25:
+            prediction = "High chance of rainfall 🌧"
+        else:
+            prediction = "Low chance of rainfall ☀️"
+
+        return render_template('result.html', data=data, highest=highest, prediction=prediction)
 
     except Exception as e:
-        return f"Error: {str(e)}"
+        return f"Error: {e}"
 
 if __name__ == '__main__':
     app.run(debug=True)

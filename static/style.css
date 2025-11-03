@@ -1,48 +1,72 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f3f6fa;
-  text-align: center;
-  padding: 30px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #eef6ff;
+    text-align: center;
+    padding: 30px;
 }
 
 .container {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  width: 60%;
-  margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: inline-block;
+    max-width: 700px;
+    width: 100%;
 }
 
-input, button {
-  margin: 5px;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+h1, h2 {
+    color: #2b6cb0;
+}
+
+.input-group {
+    margin: 10px 0;
+}
+
+input {
+    margin: 5px;
+    padding: 5px;
+    width: 100px;
 }
 
 button {
-  background-color: #007BFF;
-  color: white;
-  cursor: pointer;
+    margin: 10px;
+    padding: 10px 15px;
+    background-color: #2b6cb0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+    background-color: #1a4f8a;
 }
 
 table {
-  margin: 20px auto;
-  border-collapse: collapse;
-  width: 80%;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+    border: 1px solid #ccc;
+    padding: 8px;
 }
 
 th {
-  background-color: #007BFF;
-  color: white;
+    background-color: #e9f5ff;
+}
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #2b6cb0;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.button:hover {
+    background-color: #1a4f8a;
 }
