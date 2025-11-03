@@ -1,48 +1,90 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f3f6fa;
-  text-align: center;
-  padding: 30px;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #cce5ff, #e6f7ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .container {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  width: 60%;
-  margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 1s ease-in-out;
 }
 
-input, button {
-  margin: 5px;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+h1 {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
 }
 
 button {
-  background-color: #007BFF;
-  color: white;
-  cursor: pointer;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+    background: #0056b3;
+    transform: scale(1.05);
 }
 
-table {
-  margin: 20px auto;
-  border-collapse: collapse;
-  width: 80%;
+.button {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    background: #6c63ff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.button:hover {
+    background: #4e4acb;
+    transform: scale(1.05);
 }
 
-th {
-  background-color: #007BFF;
-  color: white;
+/* Animation Effects */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Colors */
+.blue-text { color: #007bff; }
+.red-text { color: #ff4d4d; }
+
+.info-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
 }
