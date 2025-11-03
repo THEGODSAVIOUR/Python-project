@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RainCast - Rainfall Prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainfall Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="rain"></div>
-    <div class="container">
-        <h1 class="title">🌧️ RainCast</h1>
-        <p class="subtitle">Predict rainfall using sorting magic</p>
+    <div class="container fade-in">
+        <h1>🌦 Rainfall Prediction</h1>
 
-        <form action="/predict" method="POST" class="form-card">
-            <label for="rainfall">Enter rainfall values (comma-separated):</label>
-            <input type="text" id="rainfall" name="rainfall" placeholder="e.g. 12, 45, 23, 5" required>
-            <button type="submit">Predict Rainfall</button>
+        <form id="predictionForm" method="POST" action="/predict">
+            <div id="input-container">
+                <div class="input-group fade-in">
+                    <label>🌡 Temperature (°C):</label>
+                    <input type="number" name="temp" step="0.1" required>
+
+                    <label>💧 Dew Point (°C):</label>
+                    <input type="number" name="dew" step="0.1" required>
+                </div>
+            </div>
+
+            <button type="button" id="addRow" class="button">➕ Add Another</button>
+            <button type="submit" class="button">Predict</button>
         </form>
     </div>
 

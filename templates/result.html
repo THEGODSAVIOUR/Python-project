@@ -3,39 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RainCast Results</title>
+    <title>Prediction Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .result-card {
-            text-align: center;
-            backdrop-filter: blur(20px);
-            background: rgba(255,255,255,0.5);
-            border-radius: 25px;
-            padding: 50px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            animation: fadeIn 1.2s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .prediction {
-            font-size: 1.5em;
-            color: #0077b6;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
-    <div class="rain"></div>
-    <div class="result-card">
-        <h1>🌧️ RainCast Result</h1>
-        <p><strong>Sorted Rainfall Data:</strong> {{ data }}</p>
-        <p><strong>Highest Value:</strong> {{ highest }}</p>
-        <p class="prediction">{{ prediction }}</p>
-        <a href="/" style="text-decoration:none;">
-            <button style="margin-top:20px;">🔁 Predict Again</button>
-        </a>
+    <div class="container fade-in">
+        <h1>🌦 Prediction Results</h1>
+
+        {% for entry in data %}
+        <div class="info-card fade-in" style="border-left: 5px solid {{ entry.color }};">
+            <p>🌡 Temperature: <strong>{{ entry.temp }}°C</strong></p>
+            <p>💧 Dew Point: <strong>{{ entry.dew }}°C</strong></p>
+            <p>🌡 Difference: <strong>{{ entry.diff }}°C</strong></p>
+            <h3 style="color: {{ entry.color }};">{{ entry.result }}</h3>
+        </div>
+        {% endfor %}
+
+        <a href="/" class="button fade-in">⬅ Go Back</a>
     </div>
 </body>
 </html>

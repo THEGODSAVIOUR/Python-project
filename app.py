@@ -1,13 +1,6 @@
 from flask import Flask, render_template, request
-import math
 
 app = Flask(__name__)
-
-def calculate_humidity(temp, dew):
-    specific = 6.11 * 10 ** ((7.5 * dew) / (237.3 + dew))
-    saturation = 6.11 * 10 ** ((7.5 * temp) / (237.3 + temp))
-    rh = (specific / saturation) * 100
-    return rh
 
 @app.route('/')
 def index():
@@ -15,32 +8,40 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    n = int(request.form['num_readings'])
-    temps, dews = [], []
-    humidities = []
+    try:
+        # Retrieve multiple values from the form
+        temps = request.form.getlist('temp')
+        dews = request.form.getlist('dew')
 
-    for i in range(n):
-        t = float(request.form.get(f'air_temp_{i}'))
-        d = float(request.form.get(f'dew_point_{i}'))
-        h = calculate_humidity(t, d)
-        temps.append(t)
-        dews.append(d)
-        humidities.append(h)
+        # Store results for each pair
+        data = []
+        for t, d in zip(temps, dews):
+            temp = float(t)
+            dew = float(d)
+            diff = temp - dew
 
-    data = sorted(zip(humidities, temps, dews))
+            if diff < 4:
+                result = "🌧 High chance of rain!"
+                color = "blue"
+            elif diff < 8:
+                result = "☁️ Possible light rain."
+                color = "gray"
+            else:
+                result = "☀️ No rain expected."
+                color = "orange"
 
-    highest = max(data, key=lambda x: x[0])
-    highest_humidity, high_temp, high_dew = highest
+            data.append({
+                'temp': temp,
+                'dew': dew,
+                'diff': diff,
+                'result': result,
+                'color': color
+            })
 
-    # Prediction rule
-    prediction = "High" if highest_humidity > 80 and high_temp < temps[0] else "Low"
+        return render_template('result.html', data=data)
 
-    return render_template(
-        'result.html',
-        data=data,
-        highest=highest,
-        prediction=prediction
-    )
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 if __name__ == '__main__':
     app.run(debug=True)
