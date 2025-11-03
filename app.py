@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import math
 
 app = Flask(__name__)
 
@@ -9,36 +10,37 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Retrieve multiple values from the form
-        temps = request.form.getlist('temp')
-        dews = request.form.getlist('dew')
-
-        # Store results for each pair
+        n = int(request.form['n'])
         data = []
-        for t, d in zip(temps, dews):
-            temp = float(t)
-            dew = float(d)
-            diff = temp - dew
 
-            if diff < 4:
-                result = "🌧 High chance of rain!"
-                color = "blue"
-            elif diff < 8:
-                result = "☁️ Possible light rain."
-                color = "gray"
-            else:
-                result = "☀️ No rain expected."
-                color = "orange"
+        for i in range(1, n + 1):
+            air_temp = float(request.form[f'air_temp_{i}'])
+            dew_temp = float(request.form[f'dew_temp_{i}'])
+
+            # Calculations
+            specific_humidity = 6.11 * 10 ** ((7.5 * dew_temp) / (237.3 + dew_temp))
+            saturation_point = 6.11 * 10 ** ((7.5 * air_temp) / (237.3 + air_temp))
+            relative_humidity = (specific_humidity / saturation_point) * 100
 
             data.append({
-                'temp': temp,
-                'dew': dew,
-                'diff': diff,
-                'result': result,
-                'color': color
+                'air_temp': air_temp,
+                'dew_temp': dew_temp,
+                'humidity': round(relative_humidity, 2)
             })
 
-        return render_template('result.html', data=data)
+        # Sort by humidity
+        sorted_data = sorted(data, key=lambda x: x['humidity'])
+
+        # Highest humidity
+        highest = sorted_data[-1]
+        prediction = "High" if highest['humidity'] > 70 and highest['air_temp'] < 26 else "Low"
+
+        return render_template(
+            'result.html',
+            sorted_data=sorted_data,
+            highest=highest,
+            prediction=prediction
+        )
 
     except Exception as e:
         return f"Error: {str(e)}"

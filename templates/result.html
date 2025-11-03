@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <title>Rainfall Prediction Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container fade-in">
-        <h1>🌦 Prediction Results</h1>
+  <div class="container">
+    <h1>📊 Rainfall Prediction Results</h1>
 
-        {% for entry in data %}
-        <div class="info-card fade-in" style="border-left: 5px solid {{ entry.color }};">
-            <p>🌡 Temperature: <strong>{{ entry.temp }}°C</strong></p>
-            <p>💧 Dew Point: <strong>{{ entry.dew }}°C</strong></p>
-            <p>🌡 Difference: <strong>{{ entry.diff }}°C</strong></p>
-            <h3 style="color: {{ entry.color }};">{{ entry.result }}</h3>
-        </div>
-        {% endfor %}
+    <table>
+      <tr>
+        <th>Air Temp (°C)</th>
+        <th>Dew Temp (°C)</th>
+        <th>Relative Humidity (%)</th>
+      </tr>
+      {% for row in sorted_data %}
+      <tr>
+        <td>{{ row.air_temp }}</td>
+        <td>{{ row.dew_temp }}</td>
+        <td>{{ row.humidity }}</td>
+      </tr>
+      {% endfor %}
+    </table>
 
-        <a href="/" class="button fade-in">⬅ Go Back</a>
-    </div>
+    <h3>Highest Humidity:</h3>
+    <p>Air Temp: {{ highest.air_temp }}°C | Dew Temp: {{ highest.dew_temp }}°C | Humidity: {{ highest.humidity }}%</p>
+
+    {% if prediction == "High" %}
+      <p style="color: blue; font-weight: bold;">🌧️ High chance of rainfall!</p>
+    {% else %}
+      <p style="color: red; font-weight: bold;">☀️ Low chance of rainfall.</p>
+    {% endif %}
+
+    <a href="/" class="button">← Go Back</a>
+  </div>
 </body>
 </html>

@@ -1,15 +1,23 @@
-document.getElementById('addRow').addEventListener('click', () => {
-  const container = document.getElementById('input-container');
-  const newGroup = document.createElement('div');
-  newGroup.classList.add('input-group', 'fade-in');
+function generateInputs() {
+  const n = document.getElementById('n').value;
+  const inputDiv = document.getElementById('inputFields');
+  inputDiv.innerHTML = '';
 
-  newGroup.innerHTML = `
-    <label>🌡 Temperature (°C):</label>
-    <input type="number" name="temp" step="0.1" required>
+  if (n < 1 || n > 10) {
+    alert('Please enter a number between 1 and 10');
+    return;
+  }
 
-    <label>💧 Dew Point (°C):</label>
-    <input type="number" name="dew" step="0.1" required>
-  `;
-  
-  container.appendChild(newGroup);
-});
+  for (let i = 1; i <= n; i++) {
+    const div = document.createElement('div');
+    div.classList.add('reading');
+    div.innerHTML = `
+      <h3>Reading ${i}</h3>
+      <label>Air Temperature (23–28°C):</label>
+      <input type="number" name="air_temp_${i}" step="0.1" required>
+      <label>Dew Point Temperature (7–16°C):</label>
+      <input type="number" name="dew_temp_${i}" step="0.1" required>
+    `;
+    inputDiv.appendChild(div);
+  }
+}
